@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+.News {
+    display:  flex;
+    width: 100%;
+    padding: 16px;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    /* border: 1px solid rgb(250, 85, 85); */
+}
+
+.row  {
+    display: flex;
+    /* border: 1px solid rgb(0, 0, 0); */
+    justify-content: center;
+    align-items: center;
+}
