@@ -21,3 +21,17 @@
     justify-content: center;
     align-items: center;
 }
+
+.heading {
+    /* background-color: blue; */
+    width: 94%; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;    
+}
+
+.prev-page , 
+.next-page {
+    font-size: 24px;
+    cursor: pointer;
+}
