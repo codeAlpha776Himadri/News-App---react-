@@ -7,7 +7,7 @@ export class Navbar extends Component {
 
     return (
       <div className='Navbar'>
-        <nav className="navbar navbar-light navbar-expand-lg bg-light"  style={{fontFamily : 'serif'}}>
+        <nav className="navbar navbar-light navbar-expand-lg bg-light"  style={{fontFamily : 'serif' }}>
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/"  style={{color : 'rgb(0, 39, 2)' , fontWeight : 'bold'}}>News Ultimate</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,10 +19,10 @@ export class Navbar extends Component {
                         <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="#">Store</Link>
+                        <Link className="nav-link" to="/store">Store</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link " to='#'>About us</Link>
+                        <Link className="nav-link " to='/about'>About us</Link>
                     </li>
                 </ul>
                 

@@ -2,6 +2,7 @@ import './App.css';
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import News from './News';
+import About from './About';
 import { BrowserRouter as Router , Routes , Route } from 'react-router-dom';
 
 export class App extends Component {
@@ -23,6 +24,7 @@ export class App extends Component {
         <Router>
           <Navbar/>
           <Routes>
+            <Route  exact  path='/about'    element= { <About/> }/>
             <Route  exact  path='/'         element= { <News  key='general'  country={this.state.country}  newsCatagory= 'general'  pageSize={this.state.pageSize}   APIkey={this.state.APIkey} /> } />
             <Route  exact  path='/general'  element= { <News  key='general'  country={this.state.country}  newsCatagory= 'general'  pageSize={this.state.pageSize}   APIkey={this.state.APIkey} /> } />
             <Route  exact  path='/sports'   element= { <News  key='sports'  country={this.state.country}  newsCatagory=  'sports'  pageSize={this.state.pageSize}/> }APIkey={this.state.APIkey} />
