@@ -14,7 +14,7 @@ export class News extends Component {
 
   static defaultProps = {
     country : 'us' ,
-    newsCatagory : 'sports' , 
+    newsCatagory : 'general' , 
     pageSize : 10 
   }
 
@@ -55,6 +55,20 @@ export class News extends Component {
         this.setState({
           articles : [{
               author: "newsfeedback@fool.com (Trevor Jennewine)",
+              title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
+              description: "Ark Invest has high conviction in both of these stocks. Should you?",
+              url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
+              urlToImage: "https://g.foolcdn.com/editorial/images/687563/investor-30.jpg",
+              publishedAt: "2022-07-02T12:10:00Z",
+          }, {
+            author: "newsfeedback@fool.com (Trevor Jennewine)",
+              title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
+              description: "Ark Invest has high conviction in both of these stocks. Should you?",
+              url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
+              urlToImage: "https://g.foolcdn.com/editorial/images/687563/investor-30.jpg",
+              publishedAt: "2022-07-02T12:10:00Z",
+          } , {
+            author: "newsfeedback@fool.com (Trevor Jennewine)",
               title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
               description: "Ark Invest has high conviction in both of these stocks. Should you?",
               url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
@@ -119,13 +133,15 @@ export class News extends Component {
         totalResults : data.totalResults 
       })
     }
-    // Math.ceil(this.state.articles.length / this.state.pageNo
+    
+    let text = (this.props.newsCatagory).charAt(0).toUpperCase() + (this.props.newsCatagory).slice(1) ; 
+
     return (
       
       <div className='News'>
         <div className="heading">
           <button disabled={this.state.pageNo <= 1} className="prev-page"  onClick={getLeftPage}><FaArrowAltCircleLeft/></button>
-          { this.state.loading === true ?  <div class="spinner-border text-success " role="status"></div> : <div><h1>Welcome to News World</h1></div> }
+          { this.state.loading === true ?  <div class="spinner-border text-success " role="status"></div> : <div><h1>{`Top ${text} Headlines`}</h1></div> }
           <button  disabled={ this.state.pageNo + 1 >  Math.ceil(this.state.totalResults / this.props.pageSize)}  className="next-page"  onClick={getRightPage}><FaArrowAltCircleRight/></button>
           
         </div>

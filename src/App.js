@@ -2,7 +2,7 @@ import './App.css';
 import React, { Component } from 'react'
 import Navbar from './Navbar';
 import News from './News';
-import PropTypes from 'prop-types'
+import { BrowserRouter as Router , Routes , Route } from 'react-router-dom';
 
 export class App extends Component {
 
@@ -10,7 +10,7 @@ export class App extends Component {
     super() ; 
     this.state = {
       country : 'us' , 
-      newsCatagory : 'business' ,
+      newsCatagory : 'general' ,
       pageSize : 20
     }
   }
@@ -18,17 +18,18 @@ export class App extends Component {
 
   render() {
 
-    const changeCatagory = (catagory) => {
-      this.setState({
-        newsCatagory : catagory 
-      })
-      console.log(this.state.newsCatagory) ; 
-    }
-
     return (
       <div  className='App'>
-        <Navbar changeCatagory={changeCatagory} />
-        <News  country={this.state.country}  newsCatagory={this.state.newsCatagory}  pageSize={this.state.pageSize}/>
+        <Router>
+          <Navbar/>
+          <Routes>
+            <Route  exact  path='/'         element= { <News  key='general'  country={this.state.country}  newsCatagory= 'general'  pageSize={this.state.pageSize}/> } />
+            <Route  exact  path='/general'  element= { <News  key='general'  country={this.state.country}  newsCatagory= 'general'  pageSize={this.state.pageSize}/> } />
+            <Route  exact  path='/sports'   element= { <News  key='sports'  country={this.state.country}  newsCatagory=  'sports'  pageSize={this.state.pageSize}/> } />
+            <Route  exact  path='/business' element= { <News  key='business'  country={this.state.country}  newsCatagory='business'   pageSize={this.state.pageSize}/> } />
+            <Route  exact  path='/health'   element= { <News  key='health'  country={this.state.country}  newsCatagory=  'health'  pageSize={this.state.pageSize}/> } />
+          </Routes>
+        </Router>
       </div>
     )
   }
