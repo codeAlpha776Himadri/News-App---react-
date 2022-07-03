@@ -4,7 +4,7 @@ import './NewsItem.css'
 export class NewsItem extends Component {
   render() {
 
-    let {title , description , urlImg , url } = this.props ; 
+    let {title , description , urlImg , url} = this.props ; 
 
     return (
       <div>

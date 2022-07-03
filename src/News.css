@@ -18,8 +18,8 @@
 .row  {
     display: flex;
     /* border: 1px solid rgb(0, 0, 0); */
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
 }
 
 .heading {
@@ -34,4 +34,6 @@
 .next-page {
     font-size: 24px;
     cursor: pointer;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
 }
