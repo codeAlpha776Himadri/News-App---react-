@@ -9,13 +9,15 @@ export class News extends Component {
   static propTypes = {
     country : PropTypes.string ,
     newsCatagory : PropTypes.string , 
-    pageSize : PropTypes.number
+    pageSize : PropTypes.number , 
+    APIkey : PropTypes.string
   }
 
   static defaultProps = {
     country : 'us' ,
     newsCatagory : 'general' , 
-    pageSize : 10 
+    pageSize : 10  , 
+    APIkey : 'b065937c9d4d46fd96f2749f46c50f7b' 
   }
 
   constructor() {
@@ -33,7 +35,7 @@ export class News extends Component {
   componentDidMount = async () => {
     // const catagory = 'sports'
     try {
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=686a4fba5eab4634864546caad2cf1a7&page=${this.state.pageNo}&pageSize=${this.props.pageSize}` ;
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${this.state.pageNo}&pageSize=${this.props.pageSize}` ;
       const response = await fetch(url) ; 
       const data = await response.json() ;
       if (data.status === 'ok') {
@@ -48,31 +50,15 @@ export class News extends Component {
     } catch (error) {
       console.log(error , 'contact API service provider') ; 
     } finally {
-      // console.log(this.state.articles.length) ; 
-      // if anything from API is not recieved then set this static data 
       if (this.state.articles.length === 0) {
-        console.log('i am here')
+        // set this static data  if nothing is fetched 
         this.setState({
           articles : [{
               author: "newsfeedback@fool.com (Trevor Jennewine)",
               title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
               description: "Ark Invest has high conviction in both of these stocks. Should you?",
-              url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
-              urlToImage: "https://g.foolcdn.com/editorial/images/687563/investor-30.jpg",
-              publishedAt: "2022-07-02T12:10:00Z",
-          }, {
-            author: "newsfeedback@fool.com (Trevor Jennewine)",
-              title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
-              description: "Ark Invest has high conviction in both of these stocks. Should you?",
-              url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
-              urlToImage: "https://g.foolcdn.com/editorial/images/687563/investor-30.jpg",
-              publishedAt: "2022-07-02T12:10:00Z",
-          } , {
-            author: "newsfeedback@fool.com (Trevor Jennewine)",
-              title: "12% of Cathie Wood's Portfolio Is Invested in These 2 Growth Stocks",
-              description: "Ark Invest has high conviction in both of these stocks. Should you?",
-              url: "https://www.fool.com/investing/2022/07/02/12-of-cathie-woods-portfolio-invested-in-2-stocks/",
-              urlToImage: "https://g.foolcdn.com/editorial/images/687563/investor-30.jpg",
+              url: "/",
+              urlToImage: "https://miro.medium.com/max/1200/1*mg5YaPigfU8-cwKtkxV9gw.png",
               publishedAt: "2022-07-02T12:10:00Z",
           }] , 
           loading : false , 
@@ -84,24 +70,14 @@ export class News extends Component {
 
   render() {
 
-    const getLeftPage = async () => {  
-      console.log("getting left page only for you" , this.state.pageNo) ;
-      this.setState({
-        loading : true 
-      }) 
-
-      if (this.state.pageNo === 1)  {
-        console.log("You are already at first page") ; 
-        return ;
-      }
-
-      const nextPageNo = this.state.pageNo - 1 ; 
-
-      const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.newsCatagory}&apiKey=686a4fba5eab4634864546caad2cf1a7&page=${nextPageNo}&pageSize=${this.props.pageSize}` ;
+    const getPage = async (num) => {
+      this.setState({ loading : true  }) ; 
+      this.state.articles = [] ; 
+      const nextPageNo = this.state.pageNo + num; 
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${nextPageNo}&pageSize=${this.props.pageSize}` ;
       const response = await fetch(url) ; 
       const data = await response.json() ; 
       const newsArticles = data.articles ; 
-
       this.setState({
         articles : newsArticles , 
         loading : false , 
@@ -110,52 +86,33 @@ export class News extends Component {
         totalResults : data.totalResults 
       })
     }
-  
-    const getRightPage = async () => {   
 
-      console.log("getting right page only for you" , this.state.pageNo) ;
-      this.setState({
-        loading : true 
-      }) 
-
-      const nextPageNo = this.state.pageNo + 1 ; 
-
-      const url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.newsCatagory}&apiKey=686a4fba5eab4634864546caad2cf1a7&page=${nextPageNo}&pageSize=${this.props.pageSize}` ;
-      const response = await fetch(url) ; 
-      const data = await response.json() ; 
-      const newsArticles = data.articles ; 
-
-      this.setState({
-        articles : newsArticles , 
-        loading : false , 
-        status : 'success' , 
-        pageNo : nextPageNo , 
-        totalResults : data.totalResults 
-      })
-    }
-    
-    let text = (this.props.newsCatagory).charAt(0).toUpperCase() + (this.props.newsCatagory).slice(1) ; 
+    const getLeftPage = () => getPage(-1) ; 
+    const getRightPage = () => getPage(1) ;  
 
     return (
       
       <div className='News'>
         <div className="heading">
           <button disabled={this.state.pageNo <= 1} className="prev-page"  onClick={getLeftPage}><FaArrowAltCircleLeft/></button>
-          { this.state.loading === true ?  <div class="spinner-border text-success " role="status"></div> : <div><h1>{`Top ${text} Headlines`}</h1></div> }
+          { this.state.loading === true ?  <div class="spinner-border text-info " role="status"></div> : <div><h1  style={{fontFamily : 'serif' , fontSize : '50px'}}>{`Top ${(this.props.newsCatagory).charAt(0).toUpperCase() + (this.props.newsCatagory).slice(1)} Headlines`}</h1></div> }
           <button  disabled={ this.state.pageNo + 1 >  Math.ceil(this.state.totalResults / this.props.pageSize)}  className="next-page"  onClick={getRightPage}><FaArrowAltCircleRight/></button>
           
         </div>
           
         <div className="row  px-5  my-3">
           {
-            this.state.articles.map(({ title , description , urlToImage , url}) => {
-              if (this.state.articles === undefined ||  title === null || description === null || urlToImage === null || url === null) return <div></div> ; 
+            this.state.articles.map(({ title , description , urlToImage , url , publishedAt , author }) => {
+              if (this.state.articles === undefined ||  title === null || description === null || urlToImage === null || url === null || author === null) return <div></div> ; 
               return  <div className="col-md-4  my-3">
                         <NewsItem  
                             title={title} 
                             description = {description} 
                             urlImg={urlToImage}
                             url={url}
+                            date={publishedAt}
+                            author={author}
+                            catagory={this.props.newsCatagory}
                         />
                       </div>
             })
