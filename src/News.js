@@ -16,13 +16,10 @@ export class News extends Component {
   static defaultProps = {
     country: "us",
     newsCatagory: "general",
-    pageSize: 10,
-    APIkey : '686a4fba5eab4634864546caad2cf1a7' 
+    pageSize: 10
   };
 
-  capitalize = (name) => {
-    return name.charAt(0).toUpperCase() + name.slice(1) ; 
-  }
+  capitalize = (name) => { return name.charAt(0).toUpperCase() + name.slice(1) }
 
   constructor(props) {
     super(props);
@@ -38,21 +35,19 @@ export class News extends Component {
   }
 
   fetchMoreData = async () => {
-    this.setState({ loading : false }) ; 
-    const nextPageNo = this.state.pageNo + 1;
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${nextPageNo}&pageSize=${this.props.pageSize}`;
+    this.setState({ loading : false }) ;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${ this.state.pageNo + 1}&pageSize=${this.props.pageSize}`;
     const response = await fetch(url);
     const data = await response.json();
     const newArticles = data.articles; 
     this.setState({
       articles : this.state.articles.concat(newArticles) , 
-      pageNo: nextPageNo,
+      pageNo:  this.state.pageNo + 1,
       totalResults: data.totalResults
     });
   } 
 
   componentDidMount = async () => {
-    // const catagory = 'sports'
     try {
       this.props.setProgress(10) ; 
       const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${this.state.pageNo}&pageSize=${this.props.pageSize}`;
@@ -97,17 +92,17 @@ export class News extends Component {
 
   render() {
     return (
-      // className="News"
       <div > 
         <div className="heading">
           {this.state.loading === true ? (
-            <div class="spinner-border text-info " role="status"></div>
+            <div className="spinner-border text-info " role="status"></div>
           ) : (
             <div>
-              <h1 style={{ fontFamily: "serif", fontSize: "50px" }}>{`Top ${
-                this.props.newsCatagory.charAt(0).toUpperCase() +
-                this.props.newsCatagory.slice(1)
-              } Headlines`}</h1>
+              <h1 style={{ fontFamily: "serif", fontSize: "50px" }}>
+                {`Top ${ this.props.newsCatagory.charAt(0).toUpperCase() + this.props.newsCatagory.slice(1) } 
+                  Headlines`
+                }
+              </h1>
             </div>
           )}
         </div>
@@ -119,7 +114,7 @@ export class News extends Component {
           next={this.fetchMoreData}
           hasMore={this.state.articles.length < this.state.totalResults} 
           loader={this.state.articles.length+1 < this.state.totalResults? <div className="spinnerContainer">
-            <div class="spinner-border text-info " role="status"></div>
+            <div className="spinner-border text-info " role="status"></div>
           </div> : <div className="spinnerContainer"><p>- end of results -</p></div>}
         >
         
