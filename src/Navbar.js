@@ -14,23 +14,19 @@ export class Navbar extends Component {
                 <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0" >
                     <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                        <Link className="nav-link active" aria-current="page" to="/"  style={{color : 'black'}}>Home</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/store">Store</Link>
+                        <Link className="nav-link" to="/store"  style={{color : 'black'}}>Store</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link " to='/about'>About us</Link>
+                        <Link className="nav-link " to='/about'  style={{color : 'black'}}>About us</Link>
                     </li>
-                </ul>
-                
 
-                <div  style={{ display : 'flex' , marginRight : '80px' }}>
-                <div className="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                    <ul className="navbar-nav">
-                      <li className="nav-item dropdown">
+
+                    <li className="nav-item dropdown">
                         <Link className="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{color : 'black'}}>
                           Catagory
                         </Link>
@@ -44,13 +40,8 @@ export class Navbar extends Component {
                           <li><Link className="dropdown-item" to="/technology"   >Technology</Link></li>
                         </ul>
                       </li>
-                    </ul>
-                  </div>
 
 
-
-                  <div className="collapse navbar-collapse mx-0" id="navbarNavDarkDropdown">
-                    <ul className="navbar-nav">
                       <li className="nav-item dropdown">
                         <Link className="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"  style={{color : 'black'}}>
                           Country 
@@ -61,10 +52,8 @@ export class Navbar extends Component {
                           <li><Link className="dropdown-item" to="#">Russia</Link></li>
                         </ul>
                       </li>
-                    </ul>
-                  </div>
-                  </div>
 
+                </ul>
                 </div>
             </div>
         </nav>

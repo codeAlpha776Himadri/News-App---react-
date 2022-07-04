@@ -8,15 +8,15 @@ export class NewsItem extends Component {
 
     return (
       <div>
-        <div className="card" style={{ border: "none" }}>
+        <div className="card " style={{ border: "none" , width : '19em'}} >
           <span
             class="badge badge-pill badge-success  position-absolute  bg-info "
             style={{
               top: "-8px",
               left: "-8px",
-              color: "white",
+              color: "black",
               zIndex: "1",
-              textShadow: "1px 1px 1px black",
+              fontWeight : 'normal'
             }}
           >
             {catagory}

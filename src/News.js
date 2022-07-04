@@ -2,25 +2,30 @@ import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import "./News.css";
 import PropTypes from "prop-types";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 export class News extends Component {
   static propTypes = {
     country: PropTypes.string,
     newsCatagory: PropTypes.string,
     pageSize: PropTypes.number,
-    APIkey: PropTypes.string,
+    APIkey: PropTypes.string
   };
 
   static defaultProps = {
     country: "us",
     newsCatagory: "general",
     pageSize: 10,
-    APIkey: "b065937c9d4d46fd96f2749f46c50f7b",
+    APIkey : '686a4fba5eab4634864546caad2cf1a7' 
   };
 
-  constructor() {
-    super();
+  capitalize = (name) => {
+    return name.charAt(0).toUpperCase() + name.slice(1) ; 
+  }
+
+  constructor(props) {
+    super(props);
     console.log("constructor ran ");
     this.state = {
       articles: [],
@@ -29,33 +34,33 @@ export class News extends Component {
       pageNo: 1,
       totalResults: 0,
     };
+    document.title = ` News Ultimate - ${this.capitalize(this.props.newsCatagory)} ` 
   }
 
-  getPage = async (num) => {
-    this.setState({ loading: true });
-    this.state.articles = [];
-    const nextPageNo = this.state.pageNo + num;
+  fetchMoreData = async () => {
+    this.setState({ loading : false }) ; 
+    const nextPageNo = this.state.pageNo + 1;
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${nextPageNo}&pageSize=${this.props.pageSize}`;
     const response = await fetch(url);
     const data = await response.json();
-    const newsArticles = data.articles;
+    const newArticles = data.articles; 
     this.setState({
-      articles: newsArticles,
-      loading: false,
-      status: "success",
+      articles : this.state.articles.concat(newArticles) , 
       pageNo: nextPageNo,
-      totalResults: data.totalResults,
+      totalResults: data.totalResults
     });
-  };
+  } 
 
   componentDidMount = async () => {
     // const catagory = 'sports'
     try {
+      this.props.setProgress(10) ; 
       const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.newsCatagory}&apiKey=${this.props.APIkey}&page=${this.state.pageNo}&pageSize=${this.props.pageSize}`;
       const response = await fetch(url);
       const data = await response.json();
+      this.props.setProgress(50) ; 
       if (data.status === "ok") {
-        const newsArticles = data.articles;
+        const newsArticles = data.articles; 
         this.setState({
           articles: newsArticles,
           loading: false,
@@ -63,6 +68,7 @@ export class News extends Component {
           totalResults: data.totalResults,
         });
       }
+      this.props.setProgress(100) ;
     } catch (error) {
       console.log(error, "contact API service provider");
     } finally {
@@ -85,24 +91,15 @@ export class News extends Component {
           loading: false,
           status: "success",
         });
-      }
+      } 
     }
   };
 
-  getLeftPage = async () => this.getPage(-1);
-  getRightPage = async () => this.getPage(1);
-
   render() {
     return (
-      <div className="News">
+      // className="News"
+      <div > 
         <div className="heading">
-          <button
-            disabled={this.state.pageNo <= 1}
-            className="prev-page"
-            onClick={this.getLeftPage}
-          >
-            <FaArrowAltCircleLeft />
-          </button>
           {this.state.loading === true ? (
             <div class="spinner-border text-info " role="status"></div>
           ) : (
@@ -113,19 +110,21 @@ export class News extends Component {
               } Headlines`}</h1>
             </div>
           )}
-          <button
-            disabled={
-              this.state.pageNo + 1 >
-              Math.ceil(this.state.totalResults / this.props.pageSize)
-            }
-            className="next-page"
-            onClick={this.getRightPage}
-          >
-            <FaArrowAltCircleRight />
-          </button>
         </div>
-
-        <div className="row  px-5  my-3">
+        
+        
+        <InfiniteScroll
+          className="container"
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length < this.state.totalResults} 
+          loader={this.state.articles.length+1 < this.state.totalResults? <div className="spinnerContainer">
+            <div class="spinner-border text-info " role="status"></div>
+          </div> : <div className="spinnerContainer"><p>- end of results -</p></div>}
+        >
+        
+        <div>
+        <div className="row  my-3 ">
           {this.state.articles.map(
             ({ title, description, urlToImage, url, publishedAt, author }) => {
               if (
@@ -136,10 +135,11 @@ export class News extends Component {
                 url === null ||
                 author === null
               )
-                return <div></div>;
+                return ;
               return (
-                <div className="col-md-4  my-3">
+                <div className="col-md-4  my-3 ">
                   <NewsItem
+                    key={url}
                     title={title}
                     description={description}
                     urlImg={urlToImage}
@@ -153,6 +153,10 @@ export class News extends Component {
             }
           )}
         </div>
+        </div>
+
+        </InfiniteScroll>
+
       </div>
     );
   }

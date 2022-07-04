@@ -24,10 +24,11 @@
 
 .heading {
     /* background-color: blue; */
-    width: 94%; 
+    width: 100%; 
+    padding-top: 8px;
     display: flex;
     align-items: center;
-    justify-content: space-between;    
+    justify-content: center;    
 }
 
 .prev-page , 
@@ -36,4 +37,16 @@
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0);
     border: none;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.spinnerContainer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
